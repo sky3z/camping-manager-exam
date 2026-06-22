@@ -37,6 +37,12 @@ public class GlobalExceptionHandler {
         return build(HttpStatus.UNAUTHORIZED, "Credenziali non valide", req);
     }
 
+    // dati non validi a livello di logica
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<ErrorResponse> handleBadRequest(BadRequestException ex, HttpServletRequest req) {
+        return build(HttpStatus.BAD_REQUEST, ex.getMessage(), req);
+    }
+
     // rete di sicurezza per tutto il resto, così non esce mai uno stacktrace al client
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGeneric(Exception ex, HttpServletRequest req) {

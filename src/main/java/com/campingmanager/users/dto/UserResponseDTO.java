@@ -17,7 +17,6 @@ public class UserResponseDTO {
     private String role;
     private LocalDateTime createdAt;
 
-    // costruisco il DTO a partire dall'entità
     public static UserResponseDTO from(User user) {
         UserResponseDTO dto = new UserResponseDTO();
         dto.setId(user.getId());

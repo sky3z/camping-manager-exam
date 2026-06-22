@@ -19,16 +19,14 @@ public class AuthService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
-    // controllo email e password; se sono giuste genero il token
     public AuthResponse login(LoginRequest request) {
-        // qui Spring verifica le credenziali (se sono sbagliate lancia BadCredentialsException)
+        // se le credenziali sono sbagliate qui parte BadCredentialsException
         authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
 
         User user = userRepository.findByEmail(request.getEmail())
                 .orElseThrow(() -> new UsernameNotFoundException("Utente non trovato"));
 
-        String token = jwtUtil.generateToken(user);
-        return new AuthResponse(token, user.getEmail(), user.getRole().name());
+        return new AuthResponse(jwtUtil.generateToken(user), user.getEmail(), user.getRole().name());
     }
 }
