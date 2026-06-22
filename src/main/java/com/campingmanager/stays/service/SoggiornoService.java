@@ -12,6 +12,7 @@ import com.campingmanager.stays.entity.SoggiornoStatus;
 import com.campingmanager.stays.repository.SoggiornoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.temporal.ChronoUnit;
@@ -52,10 +53,14 @@ public class SoggiornoService {
         return SoggiornoDTO.from(soggiornoRepository.save(soggiorno));
     }
 
+    // readOnly perché è solo lettura; la transazione tiene aperta la sessione
+    // per leggere l'alloggio (LAZY) durante la conversione in DTO
+    @Transactional(readOnly = true)
     public List<SoggiornoDTO> getAll() {
         return soggiornoRepository.findAll().stream().map(SoggiornoDTO::from).toList();
     }
 
+    @Transactional(readOnly = true)
     public SoggiornoDTO getById(Long id) {
         return SoggiornoDTO.from(findOrThrow(id));
     }
