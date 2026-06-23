@@ -21,4 +21,6 @@ public interface BikeRentalRepository extends JpaRepository<BikeRental, Long> {
     boolean existsOverlap(@Param("bikeId") Long bikeId,
                           @Param("start") LocalDate start,
                           @Param("end") LocalDate end);
+
+    long countByStatus(com.campingmanager.bikes.entity.BikeRentalStatus status);
 }

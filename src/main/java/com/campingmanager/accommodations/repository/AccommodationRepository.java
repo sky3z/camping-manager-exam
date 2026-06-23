@@ -1,6 +1,7 @@
 package com.campingmanager.accommodations.repository;
 
 import com.campingmanager.accommodations.entity.Accommodation;
+import com.campingmanager.accommodations.entity.AccommodationStatus;
 import com.campingmanager.accommodations.entity.AccommodationType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -30,4 +31,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
             """)
     List<Accommodation> findAvailable(@Param("checkIn") LocalDate checkIn,
                                       @Param("checkOut") LocalDate checkOut);
+
+    long countByStatus(AccommodationStatus status);
 }
