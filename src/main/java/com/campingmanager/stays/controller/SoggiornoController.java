@@ -1,5 +1,7 @@
 package com.campingmanager.stays.controller;
 
+import com.campingmanager.stays.dto.CheckInRequest;
+import com.campingmanager.stays.dto.CheckInResponse;
 import com.campingmanager.stays.dto.CreateSoggiornoRequest;
 import com.campingmanager.stays.dto.SoggiornoDTO;
 import com.campingmanager.stays.service.SoggiornoService;
@@ -40,4 +42,16 @@ public class SoggiornoController {
     public ResponseEntity<SoggiornoDTO> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(service.cancel(id));
     }
+
+    @PatchMapping("/{id}/checkin")
+    public ResponseEntity<CheckInResponse> checkIn(@PathVariable Long id,
+                                                   @Valid @RequestBody CheckInRequest request) {
+        return ResponseEntity.ok(service.checkIn(id, request));
+    }
+
+    @PatchMapping("/{id}/checkout")
+    public ResponseEntity<SoggiornoDTO> checkOut(@PathVariable Long id) {
+        return ResponseEntity.ok(service.checkOut(id));
+    }
 }
+
