@@ -34,6 +34,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         // il login e libero, tutto il resto richiede di essere autenticati
                         .requestMatchers("/api/auth/**").permitAll()
+                        // stripe chiama il webhook senza JWT, quindi lo lascio passare
+                        .requestMatchers("/api/payments/webhook").permitAll()
                         .anyRequest().authenticated())
                 // metto il mio filtro JWT prima di quello standard di Spring
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
