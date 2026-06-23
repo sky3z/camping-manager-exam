@@ -9,6 +9,7 @@ import com.campingmanager.exceptions.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -25,6 +26,14 @@ public class AccommodationService {
 
     public AccommodationDTO getById(Long id) {
         return AccommodationDTO.from(findOrThrow(id));
+    }
+
+    // alloggi disponibili in un intervallo, con filtro opzionale per tipo
+    public List<AccommodationDTO> getAvailable(LocalDate checkIn, LocalDate checkOut, AccommodationType type) {
+        return repository.findAvailable(checkIn, checkOut).stream()
+                .filter(a -> type == null || a.getType() == type)
+                .map(AccommodationDTO::from)
+                .toList();
     }
 
     public AccommodationDTO create(CreateAccommodationRequest request) {

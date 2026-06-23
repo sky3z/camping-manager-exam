@@ -6,11 +6,13 @@ import com.campingmanager.accommodations.entity.AccommodationType;
 import com.campingmanager.accommodations.service.AccommodationService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -24,6 +26,15 @@ public class AccommodationController {
     @GetMapping
     public ResponseEntity<List<AccommodationDTO>> getAll(@RequestParam(required = false) AccommodationType type) {
         return ResponseEntity.ok(service.getAll(type));
+    }
+
+    // alloggi liberi in un intervallo di date
+    @GetMapping("/available")
+    public ResponseEntity<List<AccommodationDTO>> getAvailable(
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkIn,
+            @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOut,
+            @RequestParam(required = false) AccommodationType type) {
+        return ResponseEntity.ok(service.getAvailable(checkIn, checkOut, type));
     }
 
     @GetMapping("/{id}")
