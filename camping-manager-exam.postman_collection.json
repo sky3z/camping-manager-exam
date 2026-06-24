@@ -1,0 +1,453 @@
+{
+  "info": {
+    "name": "Camping Manager Exam",
+    "_postman_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+    "description": "Collection completa per camping-manager-exam",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:8080", "type": "string" },
+    { "key": "token", "value": "", "type": "string" },
+    { "key": "adminToken", "value": "", "type": "string" },
+    { "key": "staffToken", "value": "", "type": "string" },
+    { "key": "ospiteToken", "value": "", "type": "string" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "  pm.collectionVariables.set('adminToken', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"admin@camping.it\",\n  \"password\": \"Admin123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Staff",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('staffToken', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"staff@camping.it\",\n  \"password\": \"Staff123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Login Ospite",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "var json = pm.response.json();",
+                  "if (json.token) {",
+                  "  pm.collectionVariables.set('ospiteToken', json.token);",
+                  "  pm.collectionVariables.set('token', json.token);",
+                  "}"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"mario.rossi@example.com\",\n  \"password\": \"TempPassword123!\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Profilo corrente (me)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Utenti",
+      "item": [
+        {
+          "name": "Aggiorna immagine profilo",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "src": "",
+                  "description": "Seleziona un'immagine JPG o PNG"
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/me/profile-image",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "users", "me", "profile-image"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Alloggi",
+      "item": [
+        {
+          "name": "Lista tutti gli alloggi",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/accommodations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "accommodations"]
+            }
+          }
+        },
+        {
+          "name": "Alloggi per tipo (CHALET)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/accommodations?type=CHALET",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "accommodations"],
+              "query": [{ "key": "type", "value": "CHALET" }]
+            }
+          }
+        },
+        {
+          "name": "Alloggi disponibili per date",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/accommodations/available?checkIn=2026-08-01&checkOut=2026-08-07",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "accommodations", "available"],
+              "query": [
+                { "key": "checkIn", "value": "2026-08-01" },
+                { "key": "checkOut", "value": "2026-08-07" }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Crea alloggio (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"Chalet 11\",\n  \"type\": \"CHALET\",\n  \"pricePerNight\": 80.00,\n  \"maxCapacity\": 4\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/accommodations",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "accommodations"]
+            }
+          }
+        },
+        {
+          "name": "Aggiorna stato alloggio (Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"status\": \"MANUTENZIONE\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/accommodations/1/status",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "accommodations", "1", "status"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Soggiorni",
+      "item": [
+        {
+          "name": "Lista soggiorni",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/stays",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "stays"]
+            }
+          }
+        },
+        {
+          "name": "Check-in (Staff/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{staffToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"guestName\": \"Marco\",\n  \"guestSurname\": \"Bianchi\",\n  \"guestEmail\": \"marco.bianchi@example.com\",\n  \"accommodationId\": 2,\n  \"checkInDate\": \"2026-08-01\",\n  \"checkOutDate\": \"2026-08-07\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/stays/checkin",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "stays", "checkin"]
+            }
+          }
+        },
+        {
+          "name": "Check-out (Staff/Admin)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/stays/checkout/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "stays", "checkout", "1"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Bici",
+      "item": [
+        {
+          "name": "Lista bici",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/bikes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bikes"]
+            }
+          }
+        },
+        {
+          "name": "Aggiungi bici (Admin)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{adminToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"code\": \"EBIKE-11\",\n  \"type\": \"FULL\",\n  \"pricePerDay\": 35.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bikes",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bikes"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Noleggi Bici",
+      "item": [
+        {
+          "name": "Crea noleggio (Ospite)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{ospiteToken}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"bikeId\": 1,\n  \"startDate\": \"2026-08-02\",\n  \"endDate\": \"2026-08-04\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/bikes/rentals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bikes", "rentals"]
+            }
+          }
+        },
+        {
+          "name": "Lista noleggi",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ospiteToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/bikes/rentals",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bikes", "rentals"]
+            }
+          }
+        },
+        {
+          "name": "Restituzione bici (Staff/Admin)",
+          "request": {
+            "method": "PATCH",
+            "header": [{ "key": "Authorization", "value": "Bearer {{staffToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/bikes/rentals/1/return",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "bikes", "rentals", "1", "return"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pagamenti",
+      "item": [
+        {
+          "name": "Avvia checkout Stripe (Ospite)",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Authorization", "value": "Bearer {{ospiteToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/checkout/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "checkout", "1"]
+            }
+          }
+        },
+        {
+          "name": "Webhook Stripe (simulazione)",
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Stripe-Signature", "value": "t=1234567890,v1=firma_esempio" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"type\": \"checkout.session.completed\",\n  \"data\": {\n    \"object\": {\n      \"id\": \"cs_test_esempio\"\n    }\n  }\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/payments/webhook",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "payments", "webhook"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Meteo",
+      "item": [
+        {
+          "name": "Meteo Castello Tesino (default)",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/weather",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "weather"]
+            }
+          }
+        },
+        {
+          "name": "Meteo altra città",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/weather?city=Trento",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "weather"],
+              "query": [{ "key": "city", "value": "Trento" }]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Statistiche",
+      "item": [
+        {
+          "name": "Statistiche admin",
+          "request": {
+            "method": "GET",
+            "header": [{ "key": "Authorization", "value": "Bearer {{adminToken}}" }],
+            "url": {
+              "raw": "{{baseUrl}}/api/stats",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "stats"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
