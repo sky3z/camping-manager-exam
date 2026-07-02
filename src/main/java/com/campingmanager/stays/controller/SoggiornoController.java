@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-// la gestione dei soggiorni è roba da staff (e admin)
+// la gestione dei soggiorni è dello staff (e admin)
 @RestController
 @RequestMapping("/api/stays")
 @RequiredArgsConstructor

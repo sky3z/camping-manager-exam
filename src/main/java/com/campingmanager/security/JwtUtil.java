@@ -36,7 +36,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // leggo l'email dal token (se il token e rotto o scaduto lancia eccezione)
+    // leggo l'email dal token (se il token è rotto o scaduto lancia eccezione)
     public String extractEmail(String token) {
         return Jwts.parser()
                 .verifyWith(signingKey)
@@ -46,7 +46,7 @@ public class JwtUtil {
                 .getSubject();
     }
 
-    // il token e valido se l'email coincide con quella dell'utente e non e scaduto
+    // il token è valido se l'email coincide con quella dell'utente e non è scaduto
     public boolean isTokenValid(String token, UserDetails userDetails) {
         try {
             return extractEmail(token).equals(userDetails.getUsername());

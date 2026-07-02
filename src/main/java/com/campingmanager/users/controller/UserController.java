@@ -23,7 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
-    // l'utente loggato me lo dà Spring con @AuthenticationPrincipal (lo ha messo il filtro JWT)
+    // l'utente loggato me lo dà Spring con @AuthenticationPrincipal (lo ha messo nel filtro JWT)
     @GetMapping
     public ResponseEntity<UserResponseDTO> getMe(@AuthenticationPrincipal User currentUser) {
         return ResponseEntity.ok(userService.getMe(currentUser));

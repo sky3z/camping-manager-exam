@@ -25,8 +25,7 @@ public class BikeRentalController {
     // solo l'ospite noleggia
     @PostMapping
     @PreAuthorize("hasRole('OSPITE')")
-    public ResponseEntity<BikeRentalDTO> create(@AuthenticationPrincipal Ospite ospite,
-                                                @Valid @RequestBody CreateRentalRequest request) {
+    public ResponseEntity<BikeRentalDTO> create(@AuthenticationPrincipal Ospite ospite, @Valid @RequestBody CreateRentalRequest request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.createRental(ospite, request));
     }
 

@@ -71,7 +71,7 @@ public class SecurityConfig {
         return source;
     }
 
-    // dato un email, cerco l'utente nel DB (serve a Spring per il login)
+    // data un email, cerco l'utente nel DB (serve a Spring per il login)
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository) {
         return email -> userRepository.findByEmail(email)

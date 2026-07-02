@@ -47,7 +47,7 @@ public class DataInitializer implements CommandLineRunner {
         userRepository.save(admin);
     }
 
-    // creo i chalet dal numero 1 al 10, saltando quelli che esistono già
+    // creo gli chalet dal numero 1 al 10, saltando quelli che esistono già
     private void seedChalets() {
         for (int i = 1; i <= 10; i++) {
             String name = "Chalet " + i;

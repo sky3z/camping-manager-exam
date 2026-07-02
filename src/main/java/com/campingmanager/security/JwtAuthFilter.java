@@ -30,7 +30,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
         String authHeader = request.getHeader("Authorization");
 
-        // se non c'e l'header "Bearer ..." vado avanti senza autenticare nessuno
+        // se non c'è l'header "Bearer ..." vado avanti senza autenticare nessuno
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
             filterChain.doFilter(request, response);
             return;
@@ -45,7 +45,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             // token non valido/scaduto: proseguo come non autenticato
         }
 
-        // se ho l'email e non sono gia autenticato, carico l'utente e controllo il token
+        // se ho l'email e non sono già autenticato, carico l'utente e controllo il token
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userRepository.findByEmail(email).orElse(null);
             if (user != null && jwtUtil.isTokenValid(token, user)) {
